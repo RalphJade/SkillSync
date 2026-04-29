@@ -1,4 +1,4 @@
-# SkillSync AI: O*NET Career Matcher 🎯
+# SkillSync AI: An AI-Based Job Recommendation System 🎯
 
 A University of Southern Mindanao project that uses Machine Learning to match users to careers based on the O*NET database.
 
