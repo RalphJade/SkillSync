@@ -1,0 +1,24 @@
+{
+    "rules": [
+        {
+            "if_keyword": "math",
+            "then_boost_category": "Engineering",
+            "boost_amount": 0.2
+        },
+        {
+            "if_keyword": "communication",
+            "then_boost_category": "Marketing",
+            "boost_amount": 0.2
+        },
+        {
+            "if_keyword": "creative",
+            "then_boost_category": "Design",
+            "boost_amount": 0.2
+        },
+        {
+            "if_keyword": "technology",
+            "then_boost_category": "IT",
+            "boost_amount": 0.2
+        }
+    ]
+}
