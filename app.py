@@ -79,19 +79,37 @@ def load_data():
 def load_knowledge_base():
     """Load knowledge base from external JSON file."""
     try:
-        with open('rules_full.json', 'r', encoding='utf-8') as f:
+        with open('rules.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
         return {
             "boost_rules": data.get("boost_rules", []),
             "suppress_rules": data.get("suppress_rules", []),
             "chaining_rules": data.get("chaining_rules", [])
         }
-    except FileNotFoundError:
-        # Fallback to hardcoded rules if JSON not found
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        st.error(f"Could not load rules.json: {e}. Using built-in fallback rules.")
         return {
-            "boost_rules": [...],  # your current 21 rules
-            "suppress_rules": [...],  # your current 6 rules
-            "chaining_rules": [...]   # your current 4 rules
+            "boost_rules": [
+                {"if_keyword": "math", "then_boost_category": "Computer & Math", "boost_amount": 0.15, "priority": 2},
+                {"if_keyword": "technology", "then_boost_category": "Computer & Math", "boost_amount": 0.20, "priority": 1},
+                {"if_keyword": "data", "then_boost_category": "Computer & Math", "boost_amount": 0.15, "priority": 1},
+                {"if_keyword": "help", "then_boost_category": "Healthcare Practitioners", "boost_amount": 0.15, "priority": 1},
+                {"if_keyword": "creative", "then_boost_category": "Arts, Entertainment & Sports", "boost_amount": 0.20, "priority": 1},
+            ],
+            "suppress_rules": [
+                {"if_keyword": "minimal physical", "suppress_category": "Construction & Extraction", "suppress_amount": 0.30},
+                {"if_keyword": "minimal physical", "suppress_category": "Transportation & Material Moving", "suppress_amount": 0.25},
+            ],
+            "chaining_rules": [
+                {
+                    "name": "Tech-Finance Bridge",
+                    "trigger_profile": "Computer & Math",
+                    "trigger_threshold": 0.25,
+                    "trigger_keywords": ["data", "business"],
+                    "action": {"Business & Financial": 0.08, "Management": 0.05},
+                    "explanation": "Strong tech interest + business keywords → Finance/Management boost"
+                }
+            ]
         }
 
 # ============================================================================
