@@ -77,76 +77,22 @@ def load_data():
 # 2. KNOWLEDGE BASE & REASONING ENGINE
 # ============================================================================
 def load_knowledge_base():
-    """Enhanced knowledge base with positive, negative, conditional, and chaining rules.
-    NOTE: Not cached because chaining rule conditions use runtime evaluation."""
-    kb = {
-        "boost_rules": [
-            {"if_keyword": "math", "then_boost_category": "Computer & Math", "boost_amount": 0.15, "priority": 2},
-            {"if_keyword": "math", "then_boost_category": "Architecture & Engineering", "boost_amount": 0.10, "priority": 2},
-            {"if_keyword": "communication", "then_boost_category": "Sales", "boost_amount": 0.15, "priority": 2},
-            {"if_keyword": "communication", "then_boost_category": "Management", "boost_amount": 0.10, "priority": 2},
-            {"if_keyword": "creative", "then_boost_category": "Arts, Entertainment & Sports", "boost_amount": 0.20, "priority": 1},
-            {"if_keyword": "creative", "then_boost_category": "Architecture & Engineering", "boost_amount": 0.10, "priority": 2},
-            {"if_keyword": "technology", "then_boost_category": "Computer & Math", "boost_amount": 0.20, "priority": 1},
-            {"if_keyword": "technology", "then_boost_category": "Installation, Maintenance & Repair", "boost_amount": 0.10, "priority": 2},
-            {"if_keyword": "data", "then_boost_category": "Computer & Math", "boost_amount": 0.15, "priority": 1},
-            {"if_keyword": "data", "then_boost_category": "Business & Financial", "boost_amount": 0.10, "priority": 2},
-            {"if_keyword": "help", "then_boost_category": "Healthcare Practitioners", "boost_amount": 0.15, "priority": 1},
-            {"if_keyword": "help", "then_boost_category": "Community & Social", "boost_amount": 0.15, "priority": 1},
-            {"if_keyword": "help", "then_boost_category": "Education", "boost_amount": 0.10, "priority": 2},
-            {"if_keyword": "physical", "then_boost_category": "Construction & Extraction", "boost_amount": 0.20, "priority": 1},
-            {"if_keyword": "physical", "then_boost_category": "Transportation & Material Moving", "boost_amount": 0.15, "priority": 2},
-            {"if_keyword": "science", "then_boost_category": "Science", "boost_amount": 0.20, "priority": 1},
-            {"if_keyword": "science", "then_boost_category": "Healthcare Practitioners", "boost_amount": 0.10, "priority": 2},
-            {"if_keyword": "design", "then_boost_category": "Architecture & Engineering", "boost_amount": 0.15, "priority": 1},
-            {"if_keyword": "design", "then_boost_category": "Arts, Entertainment & Sports", "boost_amount": 0.15, "priority": 1},
-            {"if_keyword": "legal", "then_boost_category": "Legal", "boost_amount": 0.25, "priority": 1},
-            {"if_keyword": "teach", "then_boost_category": "Education", "boost_amount": 0.20, "priority": 1},
-        ],
-        "suppress_rules": [
-            {"if_keyword": "minimal physical", "suppress_category": "Construction & Extraction", "suppress_amount": 0.30},
-            {"if_keyword": "minimal physical", "suppress_category": "Transportation & Material Moving", "suppress_amount": 0.25},
-            {"if_keyword": "minimal physical", "suppress_category": "Building & Grounds Cleaning", "suppress_amount": 0.25},
-            {"if_keyword": "minimal physical", "suppress_category": "Installation, Maintenance & Repair", "suppress_amount": 0.20},
-            {"if_keyword": "fast-paced", "suppress_category": "Education", "suppress_amount": 0.15},
-            {"if_keyword": "fast-paced", "suppress_category": "Office & Administrative", "suppress_amount": 0.10},
-        ],
-        "chaining_rules": [
-            {
-                "name": "Tech-Finance Bridge",
-                "trigger_profile": "Computer & Math",
-                "trigger_threshold": 0.25,
-                "trigger_keywords": ["data", "business"],
-                "action": {"Business & Financial": 0.08, "Management": 0.05},
-                "explanation": "Strong tech interest + business keywords → Finance/Management boost"
-            },
-            {
-                "name": "Healthcare-Education Bridge",
-                "trigger_profile": "Healthcare Practitioners",
-                "trigger_threshold": 0.20,
-                "trigger_keywords": ["teach", "education"],
-                "action": {"Education": 0.10, "Community & Social": 0.05},
-                "explanation": "Healthcare + teaching interest → Education/Community boost"
-            },
-            {
-                "name": "Creative-Tech Bridge",
-                "trigger_profile": "Arts, Entertainment & Sports",
-                "trigger_threshold": 0.20,
-                "trigger_keywords": ["technology", "design", "software"],
-                "action": {"Computer & Math": 0.08, "Architecture & Engineering": 0.05},
-                "explanation": "Creative + tech interest → Design/Engineering boost"
-            },
-            {
-                "name": "Leadership-Sales Bridge",
-                "trigger_profile": "Management",
-                "trigger_threshold": 0.25,
-                "trigger_keywords": ["communication", "people"],
-                "action": {"Sales": 0.10, "Community & Social": 0.05},
-                "explanation": "Management + people skills → Sales/Community boost"
-            }
-        ]
-    }
-    return kb
+    """Load knowledge base from external JSON file."""
+    try:
+        with open('rules_full.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return {
+            "boost_rules": data.get("boost_rules", []),
+            "suppress_rules": data.get("suppress_rules", []),
+            "chaining_rules": data.get("chaining_rules", [])
+        }
+    except FileNotFoundError:
+        # Fallback to hardcoded rules if JSON not found
+        return {
+            "boost_rules": [...],  # your current 21 rules
+            "suppress_rules": [...],  # your current 6 rules
+            "chaining_rules": [...]   # your current 4 rules
+        }
 
 # ============================================================================
 # 3. QUESTIONNAIRE STRUCTURE
