@@ -231,6 +231,72 @@ QUESTIONNAIRE = {
             }
         },
         "allow_multiple": True
+    },
+    6: {
+        "question": "📐 How do you prefer to structure your work?",
+        "options": {
+            "Following clear procedures and checklists": {
+                "Office & Administrative": 0.35, "Production": 0.25, "Legal": 0.20, "Healthcare Support": 0.20
+            },
+            "Experimenting and trying new approaches": {
+                "Science": 0.40, "Computer & Math": 0.25, "Arts, Entertainment & Sports": 0.20, "Architecture & Engineering": 0.15
+            },
+            "Coaching and mentoring others": {
+                "Education": 0.40, "Management": 0.25, "Healthcare Practitioners": 0.20, "Community & Social": 0.15
+            },
+            "Negotiating and closing deals": {
+                "Sales": 0.45, "Business & Financial": 0.30, "Management": 0.25
+            },
+            "Operating machinery and equipment": {
+                "Production": 0.35, "Installation, Maintenance & Repair": 0.30, "Transportation & Material Moving": 0.25, "Construction & Extraction": 0.10
+            },
+            "Investigating and analyzing evidence": {
+                "Legal": 0.35, "Science": 0.30, "Protective Service": 0.20, "Healthcare Practitioners": 0.15
+            }
+        }
+    },
+    7: {
+        "question": "⚖️ How do you handle risk and uncertainty?",
+        "options": {
+            "I avoid risk — I prefer guaranteed outcomes": {
+                "Government": 0.30, "Office & Administrative": 0.25, "Education": 0.25, "Legal": 0.20
+            },
+            "I take calculated risks with backup plans": {
+                "Business & Financial": 0.35, "Management": 0.30, "Computer & Math": 0.20, "Science": 0.15
+            },
+            "I thrive on high-risk, high-reward situations": {
+                "Sales": 0.40, "Arts, Entertainment & Sports": 0.30, "Management": 0.20, "Business & Financial": 0.10
+            },
+            "I manage risk for others — safety first": {
+                "Protective Service": 0.35, "Healthcare Practitioners": 0.30, "Military": 0.20, "Legal": 0.15
+            },
+            "I adapt quickly when plans change": {
+                "Computer & Math": 0.30, "Community & Social": 0.25, "Transportation & Material Moving": 0.25, "Installation, Maintenance & Repair": 0.20
+            }
+        }
+    },
+    8: {
+        "question": "🧠 How do you process complex information?",
+        "options": {
+            "Visual — charts, diagrams, spatial relationships": {
+                "Architecture & Engineering": 0.40, "Arts, Entertainment & Sports": 0.30, "Computer & Math": 0.20, "Science": 0.10
+            },
+            "Verbal — reading, writing, explaining to others": {
+                "Education": 0.35, "Legal": 0.30, "Community & Social": 0.20, "Sales": 0.15
+            },
+            "Kinesthetic — hands-on, learning by doing": {
+                "Construction & Extraction": 0.30, "Installation, Maintenance & Repair": 0.30, "Production": 0.25, "Farming, Fishing & Forestry": 0.15
+            },
+            "Logical — patterns, systems, algorithms": {
+                "Computer & Math": 0.45, "Science": 0.25, "Business & Financial": 0.20, "Management": 0.10
+            },
+            "Social — discussing, collaborating, brainstorming": {
+                "Management": 0.30, "Community & Social": 0.30, "Education": 0.25, "Sales": 0.15
+            },
+            "Intuitive — gut feeling, big picture, possibilities": {
+                "Arts, Entertainment & Sports": 0.35, "Management": 0.25, "Science": 0.20, "Education": 0.20
+            }
+        }
     }
 }
 
@@ -499,8 +565,8 @@ def calculate_evaluation_metrics(df, top_jobs, user_profile):
 # ============================================================================
 def render_questionnaire():
     """Render the multi-step questionnaire."""
-    progress = st.session_state.current_question / 5
-    st.progress(progress, text=f"Step {st.session_state.current_question} of 5")
+    progress = st.session_state.current_question / 8
+    st.progress(progress, text=f"Step {st.session_state.current_question} of 8")
 
     current_q = st.session_state.current_question
     q_data = QUESTIONNAIRE[current_q]
@@ -531,7 +597,7 @@ def render_questionnaire():
             st.rerun()
 
     with col3:
-        is_last = (current_q == 5)
+        is_last = (current_q == 8)
         btn_label = "🎯 See My Career Matches" if is_last else "Next ➡️"
 
         if st.button(btn_label, disabled=(not answer), use_container_width=True):
