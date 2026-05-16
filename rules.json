@@ -39,7 +39,7 @@
         {
             "if_keyword": "technology",
             "then_boost_category": "Computer & Math",
-            "boost_amount": 0.2,
+            "boost_amount": 0.3,
             "priority": 1
         },
         {
